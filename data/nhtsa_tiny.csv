@@ -1,0 +1,11 @@
+CMPLID,ODINO,MFR_NAME,MAKETXT,MODELTXT,YEARTXT,COMPDESC,OCCURENCES,CDESCR
+1,1001,"Example OEM",ACME,APEX VAN,2024,ELECTRICAL SYSTEM:SOFTWARE:OTA,3,"Fleet ops says campaign 4.2.1 stalls around 60% on the BCM after vehicles sit overnight. Depot technicians have reflashed three units this month."
+2,1002,"Example OEM",ACME,APEX VAN,2024,ELECTRICAL SYSTEM:SOFTWARE:OTA,2,"Three vans failed the morning update. All had been sitting unused since yesterday. BCM step hangs."
+3,1003,"Example OEM",ACME,HELIX,2024,ELECTRICAL SYSTEM:INFOTAINMENT,1,"The screen froze once during testing and recovered after a reboot. Only this unit so far."
+4,1004,"Example OEM",ACME,RIDGE SUV,2024,ELECTRICAL SYSTEM:INFOTAINMENT,200,"Infotainment freeze across about 200 fleet SUVs after 4.2.0. Reboot clears it then it comes back."
+5,1005,"Example OEM",ACME,VOLT,2024,ELECTRICAL SYSTEM:CHARGING,1,"Vehicle completely stopped after charging, but the charging session had ended normally and the vehicle was intentionally parked."
+6,1006,"Example OEM",ACME,APEX VAN,2024,ELECTRICAL SYSTEM:TELEMATICS,95,"Vans keep losing cellular connection on desert routes. Telematics reconnects after several minutes."
+7,1007,"Example OEM",ACME,APEX VAN,2024,ELECTRICAL SYSTEM:SOFTWARE:APP,640,"One vehicle occasionally shows stale status in the app. Fleet tool shows the same lag across 640 vans."
+8,1008,"Example OEM",ACME,APEX VAN,2024,ELECTRICAL SYSTEM:SOFTWARE:OTA,0,"Drivers are asking if we can add percent-complete OTA progress. Not a failed update."
+9,1009,"Example OEM",ACME,COURIER,2024,ELECTRICAL SYSTEM:GATEWAY,28,"Gateway communication fault after software update 4.2.1. Tech reflashed the gateway in the bay."
+10,1010,"Example OEM",ACME,HELIX,2024,ELECTRICAL SYSTEM:INFOTAINMENT,1840,"Faint hiss when bluetooth is paused. Care has 1840 tickets. Nobody is stranded."

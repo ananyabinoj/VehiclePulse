@@ -1,19 +1,32 @@
 import { NavLink, Route, Routes } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Intake from "./pages/Intake.jsx";
 import Themes from "./pages/Themes.jsx";
 import ThemeDetail from "./pages/ThemeDetail.jsx";
 import Brief from "./pages/Brief.jsx";
 
 export default function App() {
-  const [mode, setMode] = useState(null);
+  const [status, setStatus] = useState(null);
+
+  const refresh = useCallback(() => {
+    fetch("/api/status")
+      .then((r) => r.json())
+      .then(setStatus)
+      .catch(() =>
+        setStatus({
+          demoMode: true,
+          engine: "Unavailable",
+          engineDetail: "The analysis server is not reachable. Start it with `npm run server`.",
+        })
+      );
+  }, []);
 
   useEffect(() => {
-    fetch("/api/mode")
-      .then((r) => r.json())
-      .then(setMode)
-      .catch(() => setMode({ demoMode: true, hint: "API not reachable yet." }));
-  }, []);
+    refresh();
+  }, [refresh]);
+
+  const live = status?.demoMode === false;
+  const corpus = status?.corpus;
 
   return (
     <>
@@ -23,11 +36,25 @@ export default function App() {
             <h1>VehiclePulse</h1>
             <p>Connected Vehicle Software Feedback Triage</p>
           </div>
-          {mode?.demoMode !== false && (
-            <div className="demo-chip" title={mode?.hint || ""}>
-              Demo Mode — no API key configured
+          {/*
+            §25 — the engine is always visible so nobody mistakes a rule-based result for a
+            live one. It reports which engine is running and never anything about the key
+            itself beyond whether one was found server-side.
+          */}
+          <div className="status-stack">
+            <div className={`engine-chip ${live ? "live" : ""}`} title={status?.engineDetail || ""}>
+              {live ? "● Live LLM" : "● Demo Mode"}
+              {live && status?.model ? ` · ${status.model}` : ""}
             </div>
-          )}
+            {corpus && (
+              <div className="status-line">
+                {corpus.total.toLocaleString()} report{corpus.total === 1 ? "" : "s"}
+                {corpus.real > 0 ? ` · ${corpus.real.toLocaleString()} NHTSA / Public` : ""}
+                {corpus.pending > 0 ? ` · ${corpus.pending.toLocaleString()} not yet triaged` : ""}
+                {corpus.failed > 0 ? ` · ${corpus.failed.toLocaleString()} failed` : ""}
+              </div>
+            )}
+          </div>
         </div>
         <nav className="nav">
           <NavLink to="/" end>
@@ -38,7 +65,7 @@ export default function App() {
         </nav>
       </header>
       <Routes>
-        <Route path="/" element={<Intake mode={mode} />} />
+        <Route path="/" element={<Intake status={status} onCorpusChange={refresh} />} />
         <Route path="/themes" element={<Themes />} />
         <Route path="/themes/:id" element={<ThemeDetail />} />
         <Route path="/brief" element={<Brief />} />

@@ -882,11 +882,6 @@ export const REPORTS = [
   },
 ];
 
-export const SEVERITY_WEIGHTS = { P0: 10, P1: 5, P2: 2, P3: 1 };
-
-export const SEVERITY_LABELS = {
-  P0: "P0 — Critical",
-  P1: "P1 — High",
-  P2: "P2 — Medium",
-  P3: "P3 — Low",
-};
+// Re-exported from rubric.js so the weights and labels have exactly one definition.
+// Kept here because existing modules already import them from seed.js.
+export { SEVERITY_WEIGHTS, SEVERITY_LABELS } from "./rubric.js";

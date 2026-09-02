@@ -1,6 +1,13 @@
 node_modules
 dist
 .env
+.env.*
+!.env.example
 *.db
 data/vehiclepulse.db
 .DS_Store
+
+# Large NHTSA source data — never commit. Download from
+# https://www.nhtsa.gov/nhtsa-datasets-and-apis (Complaints flat file)
+FLAT_CMPL.txt
+*.zip

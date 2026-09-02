@@ -45,8 +45,26 @@ a:hover { text-decoration: underline; }
   border-radius: 4px;
   white-space: nowrap;
 }
-.nav { display: flex; gap: 4px; margin-top: 12px; }
-.nav a {
+/* --------------------------------- header engine indicator (§25); key never shown */
+.status-stack { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.engine-chip {
+  font-size: 12px;
+  border: 1px solid #e0c07a;
+  background: #fff8e8;
+  color: var(--warn);
+  padding: 4px 9px;
+  border-radius: 4px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+}
+.engine-chip .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.engine-chip.live { border-color: #a8c4a2; background: #eff6ed; color: #2f5d3a; }
+.status-line { font-size: 12px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.nav { display: flex; gap: 4px; margin-top: 12px; }.nav a {
   padding: 8px 12px 10px;
   color: var(--muted);
   border-bottom: 2px solid transparent;
@@ -73,6 +91,7 @@ h2 { margin: 0 0 6px; font-size: 22px; color: var(--navy-2); }
 .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
 .metric .k { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
 .metric .v { font-size: 26px; font-weight: 700; color: var(--navy); margin-top: 4px; }
+.metric .s { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
 .btn {
   background: var(--navy);
@@ -147,6 +166,9 @@ details.details summary { cursor: pointer; color: var(--navy); }
 .theme-row:hover { background: #f8fafc; }
 .score { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--navy); font-size: 20px; text-align: right; }
 .score span { display: block; font-size: 11px; font-weight: 500; color: var(--muted); }
+/* The priority basis sits under the score so the number is never unexplained (§5/§20). */
+.theme-row .score { max-width: 190px; }
+.score .note { font-size: 11px; line-height: 1.35; margin-top: 4px; white-space: normal; }
 
 .meta { font-size: 13px; color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
 
@@ -168,7 +190,65 @@ details.details summary { cursor: pointer; color: var(--navy); }
 
 .dist { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
 
+/* ---------------------------------------------- intake: input mode toggle (§9) */
+.tabs { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 5px; overflow: hidden; margin-bottom: 14px; }
+.tab {
+  background: var(--surface);
+  color: var(--muted);
+  border: 0;
+  border-right: 1px solid var(--line);
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.tab:last-child { border-right: 0; }
+.tab.active { background: var(--navy); color: #fff; }
+.tab:not(.active):hover { background: #eef2f6; }
+
+/* --------------------------------------------------- import preview and tables */
+.note { font-size: 13px; color: var(--muted); margin: 0; }
+.sub { margin: 16px 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--navy); }
+.mono { font-family: "Consolas", "SF Mono", Menlo, monospace; font-size: 12px; }
+.scroll-x { overflow-x: auto; border: 1px solid var(--line); border-radius: 4px; }
+.scroll-x .table { min-width: 100%; }
+.table-tight th, .table-tight td { padding: 5px 6px; font-size: 12px; white-space: nowrap; }
+.table-tight td.col-key, .table-tight th.col-key { white-space: normal; min-width: 260px; }
+.col-key { background: #f5f8fb; }
+.preview-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+
+.sev-wrap { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  background: #f2f5f8;
+  color: var(--muted);
+  white-space: nowrap;
+}
+/* Public complaint data and synthetic demo data must never look alike (§11/§16). */
+.pill-real { background: #eef3f8; border-color: #cfd9e4; color: var(--navy); font-weight: 600; }
+.pill-synthetic { background: #f4f1fa; border-color: #d9d1ea; color: #4b3f6b; font-weight: 600; }
+.pill-pending { background: #fff8e8; border-color: #e0c07a; color: var(--warn); }
+
+.kv { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; }
+.kv .k { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.kv .v { display: block; font-size: 20px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+
+/* -------------------------------------------------- batch analysis progress (§15) */
+.progress-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.bar { height: 6px; background: #e6ebf0; border-radius: 3px; margin-top: 6px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--navy); transition: width 0.15s linear; }
+
+.btn-sm { padding: 4px 9px; font-size: 12px; }
+.sim-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
 @media (max-width: 800px) {
   .grid-4 { grid-template-columns: 1fr 1fr; }
   .brand-row { flex-direction: column; }
+  .kv { grid-template-columns: 1fr 1fr; }
 }

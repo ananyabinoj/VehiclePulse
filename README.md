@@ -17,7 +17,7 @@ Then open **http://localhost:5173**
 
 ### Demo Mode (default)
 
-If `OPENAI_API_KEY` is not set, the app runs in **Demo Mode**:
+If `GROQ_API_KEY` is not set, the app runs in **Demo Mode**:
 
 - 40 seed reports and Themes work
 - **Load example report** → **Analyze report** returns a pre-generated, reasoned result
@@ -26,8 +26,13 @@ If `OPENAI_API_KEY` is not set, the app runs in **Demo Mode**:
 ### Live LLM (optional)
 
 1. Copy `.env.example` to `.env`
-2. Set `OPENAI_API_KEY`
-3. Restart `npm run dev`
+2. Set `GROQ_API_KEY` to your Groq API key
+3. Optionally set `GROQ_MODEL` (default: `llama-3.3-70b-versatile`)
+4. Restart `npm run dev`
+
+The API key is read server-side only and never sent to the browser.
+
+> **Embeddings:** Groq does not provide an embeddings API. Similarity search and theme clustering use local lexical vectors. If you also set `OPENAI_API_KEY`, semantic OpenAI embeddings (`text-embedding-3-small`) will be used instead.
 
 ## 3-minute demo
 
@@ -51,4 +56,10 @@ Serves the API and built UI on port **8787**.
 
 ## Stack
 
-Vite + React frontend, Express API, sql.js (SQLite) seed database, optional OpenAI JSON classification, TF-IDF/cosine hybrid duplicate matching.
+- Frontend: Vite + React
+- API: Express (Node.js)
+- Database: sql.js (SQLite, persisted to `data/vehiclepulse.db`)
+- LLM: Groq (`llama-3.3-70b-versatile` by default) via OpenAI-compatible API
+- Embeddings: Local lexical vectors (TF-IDF/cosine hybrid); OpenAI `text-embedding-3-small` if `OPENAI_API_KEY` is set
+- Similarity: TF-IDF + cosine, lexical candidate shortlisting
+- Import: NHTSA flat file, CSV, TSV — auto-detected, no manual column mapping needed
